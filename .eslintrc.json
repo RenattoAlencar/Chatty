@@ -15,5 +15,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "camelcase": "off",
+        "space-before-function-paren": "off"
     }
 }
