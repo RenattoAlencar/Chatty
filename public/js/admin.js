@@ -1,11 +1,12 @@
 const socket = io()
 let connectionsUsers = []
+let connectionInSupport = []
 
 socket.on('admin_list_all_users', connections => {
   connectionsUsers = connections
   document.getElementById('list_users').innerHTML = ''
 
-  const template = document.getElementById('template').innerHTML
+  let template = document.getElementById('template').innerHTML
 
   connections.forEach(connection => {
     const rendered = Mustache.render(template, {
@@ -31,9 +32,6 @@ function call(id) {
     user_id: connection.user_id,
   }
 
-  socket.emit('admin_user_in_support', params)
-
-
   socket.emit('admin_list_messages_by_user', params, messages => {
     const divMessages = document.getElementById(`allMessages${connection.user_id}`)
 
@@ -52,6 +50,7 @@ function call(id) {
         createDiv.innerHTML += `<span class="admin_date">${dayjs(message.created_at).format('DD/MM/YYYY HH:mm:ss')} </span>`
       }
       divMessages.appendChild(createDiv)
+      text.value = ''
     })
   })
 }
@@ -72,14 +71,16 @@ function sendMessage(id) {
   createDiv.innerHTML = `ATENDENTE: <span>${params.text} </span>`
   createDiv.innerHTML += `<span class="admin_date">${dayjs().format('DD/MM/YYYY HH:mm:ss')} </span>`
   divMessages.appendChild(createDiv)
-  text.value = ''
+  // text.value = ''
 }
 
 socket.on('admin_receive_message', data => {
+  console.log('DATA:', data)
 
   const connection = connectionsUsers.find(
     (connection) => (connection.socket_id = data.socket_id)
   )
+  console.log('CONNECTION:', connection)
 
   const divMessages = document.getElementById(`allMessages${connection.user_id}`)
 
@@ -90,6 +91,5 @@ socket.on('admin_receive_message', data => {
   createDiv.innerHTML = `ATENDENTE: <span>${data.message.text} </span>`
   createDiv.innerHTML += `<span class="admin_date">${dayjs(data.message.created_at).format('DD/MM/YYYY HH:mm:ss')} </span>`
   divMessages.appendChild(createDiv)
-  text.value = ''
 
 })

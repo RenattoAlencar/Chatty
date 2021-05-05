@@ -51,9 +51,20 @@ class ConnectionsService {
       .createQueryBuilder()
       .update(Connection)
       .set({ admin_id })
-      .where('user_id = :user_id', {
-        user_id
-      }).execute()
+      .where("user_id = :user_id", {
+        user_id,
+      })
+      .execute();
+  }
+
+  async deleteBySocketId(socket_id: string) {
+    await this.connectionsRepository
+      .createQueryBuilder()
+      .delete()
+      .where("socket_id = :socket_id", {
+        socket_id,
+      })
+      .execute();
   }
 }
 
