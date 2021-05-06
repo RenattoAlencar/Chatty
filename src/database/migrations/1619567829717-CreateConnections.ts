@@ -33,22 +33,21 @@ export class CreateConnections1619567829717 implements MigrationInterface {
           type: 'timestamp',
           default: 'now()'
         }
+      ],
+      foreignKeys: [
+        {
+          name: 'FKConnectionUser',
+          referencedTableName: 'users',
+          referencedColumnNames: ['id'],
+          columnNames: ['user_id'],
+          onUpdate: 'SET NULL',
+          onDelete: 'SET NULL'
+        }
       ]
     }))
-    await queryRunner.createForeignKey(
-      'connections', new TableForeignKey({
-        name: 'FKConnectionUser',
-        referencedTableName: 'users',
-        referencedColumnNames: ['id'],
-        columnNames: ['user_id'],
-        onUpdate: 'SET NULL',
-        onDelete: 'SET NULL'
-      })
-    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('connections', 'FKConnectionUser')
     await queryRunner.dropTable('connections')
   }
 }

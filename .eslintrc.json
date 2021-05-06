@@ -15,9 +15,10 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "camelcase": "off",
-        "space-before-function-paren": "off",
-        "no-unused-vars": "off",
         "no-undef": "off",
+        "no-unused-vars": "off",
+        "space-before-function-paren": "off",
+        "camelcase": "off",
+        "prefer-const": "off"
     }
 }
